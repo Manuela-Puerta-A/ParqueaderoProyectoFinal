@@ -21,6 +21,9 @@ public class Parqueadero {
 
     // ------------------Constructor--------------------//
     public Parqueadero(String nombreaParqueadero, int filas, int columnas) {
+        assert nombreaParqueadero != null;
+        assert filas >= 0;
+        assert columnas >= 0;
         this.nombreParqueadero = nombreaParqueadero;
         this.filas = filas;
         this.columnas = columnas;
@@ -56,43 +59,38 @@ public class Parqueadero {
             System.out.println();
         }
     }
-    public void  ocuparPuesto(Vehiculo vehiculo,  int i, int j) {
+
+    public void ocuparPuesto(Vehiculo vehiculo, int i, int j) {
         if (i >= 0 && i < maxI && j >= 0 && j < maxJ) {
             puestos[i][j].ocuparPuesto(vehiculo);
         } else {
             System.out.println("Posición inválida.");
         }
     }
-    public  void estadoactualparqueadero(){
-        for(int i=0;i<maxI;i++){
-            for(int j=0; j<maxJ; j++){
-                Puesto puesto= puestos[i][j];
-                if(puesto.ocupado()){
-                    Vehiculo vehiculo=puesto.getVehiculo();
-                if(vehiculo instanceof Carro){
-                    System.out.println("Carro");
-                }
-                else if( vehiculo instanceof Moto){
-                    System.out.println("Moto");
 
-                }else if( vehiculo instanceof MotoHibrida){
-                    System.out.println("hibrida");
-                }
-                }else{
+    public void estadoactualparqueadero() {
+        for (int i = 0; i < maxI; i++) {
+            for (int j = 0; j < maxJ; j++) {
+                Puesto puesto = puestos[i][j];
+                if (puesto.ocupado()) {
+                    Vehiculo vehiculo = puesto.getVehiculo();
+                    if (vehiculo instanceof Carro) {
+                        System.out.println("Carro");
+                    } else if (vehiculo instanceof Moto) {
+                        System.out.println("Moto");
+
+                    } else if (vehiculo instanceof MotoHibrida) {
+                        System.out.println("hibrida");
+                    }
+                } else {
                     System.out.println("L");
                 }
 
             }
-        System.out.println();
+            System.out.println();
         }
-    
+
     }
-
-
-            
-
-    
-
 
     public String getNombreParqueadero() {
         return nombreParqueadero;
@@ -123,6 +121,3 @@ public class Parqueadero {
         throw new UnsupportedOperationException("Unimplemented method 'ocuparPuesto'");
     }
 }
-
-    
-
