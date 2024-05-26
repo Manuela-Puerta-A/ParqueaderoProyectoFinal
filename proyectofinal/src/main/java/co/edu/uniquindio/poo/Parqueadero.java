@@ -4,66 +4,50 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Scanner;
-
 import javax.swing.JOptionPane;
 
 public class Parqueadero {
+    private String nombreParqueadero;
+    private int filas;
+    private int columnas;
+    private Puesto[][] puestos;
+    private Map<String, Vehiculo> registroVehiculos;
+    private Map<String, Double> tarifas;
+    private double totalDiario;
+    private double totalMensual;
 
-    private static Scanner scanner = new Scanner(System.in);
-    private int maxI, maxJ;
-    String nombreParqueadero;
-    int filas;
-    int columnas;
-    Puesto[][] puestos;
-    Map<String, Vehiculo> registroVehiculos;
-    Map<String, Double> tarifas;
-
-    // ------------------Constructor--------------------//
-    public Parqueadero(String nombreaParqueadero, int filas, int columnas) {
-        assert nombreaParqueadero != null;
-        assert filas >= 0;
-        assert columnas >= 0;
-        this.nombreParqueadero = nombreaParqueadero;
+    public Parqueadero(String nombreParqueadero, int filas, int columnas) {
+        this.nombreParqueadero = nombreParqueadero;
         this.filas = filas;
         this.columnas = columnas;
-        this.maxI = filas;
-        this.maxJ = columnas;
         this.puestos = new Puesto[filas][columnas];
         this.registroVehiculos = new HashMap<>();
         this.tarifas = new HashMap<>();
-
+        inicializarPuestos();
     }
 
-    // -Metodo para crear un parqueadero con nombre-//
-    public static String crearParqueadero() {
-        String nombreParqueadero = JOptionPane.showInputDialog("Ingrese el nombre del Parqueadero:");
-
-        JOptionPane.showMessageDialog(null, "Parqueadero creado: " + nombreParqueadero);
-        return nombreParqueadero;
-    }
-
-    // ----------------Metodo para crear el tamaño del parqueadero--------------//
-    public static void tamanoParqueadero() {
-        int filas = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de filas del parqueadero:"));
-        int columnas = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de columnas del parqueadero:"));
-        String[][] puestos = new String[filas][columnas];
-        System.out.println("Parqueadero creado:");
-        for (int i = 0; i < puestos.length; i++) {
-            for (int j = 0; j < puestos[0].length; j++) {
-                if (i == j) {
-                    puestos[i][j] = "x";
-                } else {
-                    puestos[i][j] = "[L]";
-                }
-                System.out.print(puestos[i][j] + "\t");
+    private void inicializarPuestos() {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                puestos[i][j] = new Puesto(i, j);
             }
-            System.out.println();
         }
     }
 
+    public void configurarTarifas() {
+        double tarifaCarro = Double.parseDouble(JOptionPane.showInputDialog("Ingrese la tarifa por hora para carros:"));
+        double tarifaMoto = Double
+                .parseDouble(JOptionPane.showInputDialog("Ingrese la tarifa por hora para motos clásicas:"));
+        double tarifaMotoHibrida = Double
+                .parseDouble(JOptionPane.showInputDialog("Ingrese la tarifa por hora para motos híbridas:"));
+        tarifas.put("Carro", tarifaCarro);
+        tarifas.put("Moto", tarifaMoto);
+        tarifas.put("MotoHibrida", tarifaMotoHibrida);
+        JOptionPane.showMessageDialog(null, "Tarifas configuradas correctamente.");
+    }
+
     public void ocuparPuesto(Vehiculo vehiculo, int i, int j) {
-        if (i >= 0 && i < maxI && j >= 0 && j < maxJ) {
+        if (i >= 0 && i < filas && j >= 0 && j < columnas) {
             if (puestos[i][j].ocupar(vehiculo)) {
                 System.out.println("Vehículo con placa " + vehiculo.getNumeroPlaca()
                         + " ha sido colocado en el puesto [" + i + "][" + j + "]");
@@ -76,56 +60,68 @@ public class Parqueadero {
         }
     }
 
-    public void estadoactualparqueadero() {
-        for (int i = 0; i < maxI; i++) {
-            for (int j = 0; j < maxJ; j++) {
+    public void mostrarVehiculos() {
+        registroVehiculos.values().forEach(System.out::println);
+    }
+
+    public void estadoActual() {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
                 Puesto puesto = puestos[i][j];
                 if (puesto.ocupado()) {
                     Vehiculo vehiculo = puesto.getVehiculo();
-                    if (vehiculo instanceof Carro) {
-                        System.out.println("Carro");
-                    } else if (vehiculo instanceof Moto) {
-                        System.out.println("Moto");
-
-                    } else if (vehiculo instanceof MotoHibrida) {
-                        System.out.println("hibrida");
-                    }
+                    System.out.print(vehiculo.getClass().getSimpleName().charAt(0));
                 } else {
-                    System.out.println("L");
+                    System.out.print("L");
                 }
-
+                System.out.print("\t");
             }
             System.out.println();
         }
-
     }
 
-    public String getNombreParqueadero() {
-        return nombreParqueadero;
+    public void eliminarVehiculo() {
+        String placa = JOptionPane.showInputDialog("Ingrese la placa del vehiculo que desea eliminar:");
+        Vehiculo vehiculo = registroVehiculos.remove(placa);
+        if (vehiculo != null) {
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    if (puestos[i][j].getVehiculo() == vehiculo) {
+                        puestos[i][j].liberar();
+                        System.out.println(
+                                "Vehículo con placa " + placa + " eliminado del puesto [" + i + "][" + j + "]");
+                        return;
+                    }
+                }
+            }
+        } else {
+            System.out.println("Vehículo con placa " + placa + " no encontrado.");
+        }
     }
 
-    public void setNombreParqueadero(String nombreParqueadero) {
-        this.nombreParqueadero = nombreParqueadero;
+    public void calcularTotalPagar() {
+        String placa = JOptionPane.showInputDialog("Ingrese la placa del vehiculo:");
+        Vehiculo vehiculo = registroVehiculos.get(placa);
+        if (vehiculo != null) {
+            LocalDateTime salida = LocalDateTime.now();
+            double tarifa = tarifas.get(vehiculo.getClass().getSimpleName());
+            long horas = java.time.Duration.between(vehiculo.getHoraIngreso(), salida).toHours();
+            double totalPagar = horas * tarifa;
+            totalDiario += totalPagar;
+            totalMensual += totalPagar;
+            System.out.println("El total a pagar por el vehículo con placa " + placa + " es: " + totalPagar);
+        } else {
+            System.out.println("Vehículo con placa " + placa + " no encontrado.");
+        }
     }
 
-    public int getFilas() {
-        return filas;
-    }
+    public void generarReporte() {
+        System.out.println("Reporte Diario:");
+        System.out.println("Total recaudado: " + totalDiario);
+        // TODO: Desglose por tipo de vehículo
 
-    public void setFilas(int filas) {
-        this.filas = filas;
-    }
-
-    public int getColumnas() {
-        return columnas;
-    }
-
-    public void setColumnas(int columnas) {
-        this.columnas = columnas;
-    }
-
-    public static void ocuparPuesto(LinkedList<Vehiculo> vehiculos, int posicioni, int posicionj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ocuparPuesto'");
+        System.out.println("Reporte Mensual:");
+        System.out.println("Total recaudado: " + totalMensual);
+        // TODO: Desglose por tipo de vehículo
     }
 }
