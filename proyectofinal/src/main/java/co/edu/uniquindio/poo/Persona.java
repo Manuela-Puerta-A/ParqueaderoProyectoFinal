@@ -2,21 +2,16 @@ package co.edu.uniquindio.poo;
 
 public class Persona {
     protected String nombre;
-    protected String direccion;
-    protected String telefono;
+    protected String documento;
 
-    public Persona(String nombre, String direccion, String telefono) {
+    public Persona(String nombre, String documento) {
         this.nombre = nombre;
-        this.direccion = direccion;
-        this.telefono = telefono;
+        this.documento = documento;
+
     }
 
     @Override
     public String toString() {
-        return "Persona{" +
-                "nombre='" + nombre + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", telefono='" + telefono + '\'' +
-                '}';
+        return "Persona{" + "Nombre='" + nombre + '\'' + ", Documento=" + documento + '}';
     }
 }

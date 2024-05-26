@@ -1,8 +1,8 @@
 package co.edu.uniquindio.poo;
 
 import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -49,6 +49,7 @@ public class Parqueadero {
     public void ocuparPuesto(Vehiculo vehiculo, int i, int j) {
         if (i >= 0 && i < filas && j >= 0 && j < columnas) {
             if (puestos[i][j].ocupar(vehiculo)) {
+                vehiculo.setHoraIngreso(LocalDateTime.now()); // Establecer la hora de ingreso
                 System.out.println("Vehículo con placa " + vehiculo.getNumeroPlaca()
                         + " ha sido colocado en el puesto [" + i + "][" + j + "]");
                 registroVehiculos.put(vehiculo.getNumeroPlaca(), vehiculo);
@@ -57,6 +58,26 @@ public class Parqueadero {
             }
         } else {
             System.out.println("Posición inválida.");
+        }
+    }
+
+    public void calcularTotalPagar() {
+        String placa = JOptionPane.showInputDialog("Ingrese la placa del vehiculo:");
+        Vehiculo vehiculo = registroVehiculos.get(placa);
+        if (vehiculo != null) {
+            LocalDateTime salida = LocalDateTime.now();
+            double tarifa = tarifas.get(vehiculo.getClass().getSimpleName());
+            Duration duracion = Duration.between(vehiculo.getHoraIngreso(), salida);
+            long horas = duracion.toHours();
+            if (duracion.toMinutesPart() > 0) { // Cobrar hora adicional si hay minutos restantes
+                horas++;
+            }
+            double totalPagar = horas * tarifa;
+            totalDiario += totalPagar;
+            totalMensual += totalPagar;
+            System.out.println("El total a pagar por el vehículo con placa " + placa + " es: " + totalPagar);
+        } else {
+            System.out.println("Vehículo con placa " + placa + " no encontrado.");
         }
     }
 
@@ -94,22 +115,6 @@ public class Parqueadero {
                     }
                 }
             }
-        } else {
-            System.out.println("Vehículo con placa " + placa + " no encontrado.");
-        }
-    }
-
-    public void calcularTotalPagar() {
-        String placa = JOptionPane.showInputDialog("Ingrese la placa del vehiculo:");
-        Vehiculo vehiculo = registroVehiculos.get(placa);
-        if (vehiculo != null) {
-            LocalDateTime salida = LocalDateTime.now();
-            double tarifa = tarifas.get(vehiculo.getClass().getSimpleName());
-            long horas = java.time.Duration.between(vehiculo.getHoraIngreso(), salida).toHours();
-            double totalPagar = horas * tarifa;
-            totalDiario += totalPagar;
-            totalMensual += totalPagar;
-            System.out.println("El total a pagar por el vehículo con placa " + placa + " es: " + totalPagar);
         } else {
             System.out.println("Vehículo con placa " + placa + " no encontrado.");
         }

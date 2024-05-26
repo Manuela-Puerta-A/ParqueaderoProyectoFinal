@@ -1,5 +1,7 @@
 package co.edu.uniquindio.poo;
 
+import java.time.LocalDateTime;
+
 public class Moto extends Vehiculo {
     private String velocidadMaxima;
 
@@ -11,4 +13,5 @@ public class Moto extends Vehiculo {
     public String getVelocidadMaxima() {
         return velocidadMaxima;
     }
+
 }

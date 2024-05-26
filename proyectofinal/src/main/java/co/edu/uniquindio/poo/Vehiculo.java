@@ -1,7 +1,6 @@
 package co.edu.uniquindio.poo;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 public abstract class Vehiculo {
@@ -26,12 +25,17 @@ public abstract class Vehiculo {
         return horaIngreso;
     }
 
+    public void setHoraIngreso(LocalDateTime horaIngreso) {
+        this.horaIngreso = horaIngreso;
+    }
+
     @Override
     public String toString() {
         return "Vehiculo{" +
                 "numeroPlaca='" + numeroPlaca + '\'' +
                 ", modelo='" + modelo + '\'' +
                 ", propietario=" + propietario +
+                ", horaIngreso=" + horaIngreso +
                 '}';
     }
 
