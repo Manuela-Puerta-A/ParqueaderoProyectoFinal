@@ -63,15 +63,15 @@ public class Vehiculo {
         System.out.println("Ingrese el modelo del Vehiculo;");
         String modelo = scanner.nextLine();
         System.out.println("ingrese la posicion donde desee guardar su vehiculo i");
-        int posicioni =scanner.nextInt();
+        int posicioni = scanner.nextInt();
         System.out.println("ingrese la posicion donde desee guardar su vehiculo j");
-        int posicionj =scanner.nextInt();
+        int posicionj = scanner.nextInt();
 
         switch (tipo) {
             case 1:
                 System.out.println("Vehiculo agregado correctamente\n ");
                 vehiculos.add(new Carro(numeroPlaca, modelo, propietario));
-                Parqueadero.ocuparPuesto(vehiculos, posicioni,posicionj);
+                Parqueadero.ocuparPuesto(vehiculos, posicioni, posicionj);
                 break;
             case 2:
 
@@ -79,14 +79,14 @@ public class Vehiculo {
                 String velocidadMaxima = scanner.nextLine();
                 System.out.println("Vehiculo agregado correctamente\n ");
                 vehiculos.add(new Moto(numeroPlaca, modelo, propietario, velocidadMaxima));
-                Parqueadero.ocuparPuesto(vehiculos, posicioni,posicionj);
+                Parqueadero.ocuparPuesto(vehiculos, posicioni, posicionj);
                 break;
             case 3:
                 System.out.println("Ingrese la velocidad maxima del Vehiculo;");
                 String velocidadMaximaElectrica = scanner.nextLine();
                 System.out.println("Vehiculo agregado correctamente\n ");
                 vehiculos.add(new MotoHibrida(numeroPlaca, modelo, propietario, velocidadMaximaElectrica));
-                //Puesto.ocuparPuesto(vehiculos, posicioni,posicionj);
+                // Puesto.ocuparPuesto(vehiculos, posicioni,posicionj);
                 break;
 
             default:

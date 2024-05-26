@@ -27,6 +27,8 @@ public class Parqueadero {
         this.nombreParqueadero = nombreaParqueadero;
         this.filas = filas;
         this.columnas = columnas;
+        this.maxI = filas;
+        this.maxJ = columnas;
         this.puestos = new Puesto[filas][columnas];
         this.registroVehiculos = new HashMap<>();
         this.tarifas = new HashMap<>();
@@ -62,7 +64,13 @@ public class Parqueadero {
 
     public void ocuparPuesto(Vehiculo vehiculo, int i, int j) {
         if (i >= 0 && i < maxI && j >= 0 && j < maxJ) {
-            puestos[i][j].ocuparPuesto(vehiculo);
+            if (puestos[i][j].ocupar(vehiculo)) {
+                System.out.println("Vehículo con placa " + vehiculo.getNumeroPlaca()
+                        + " ha sido colocado en el puesto [" + i + "][" + j + "]");
+                registroVehiculos.put(vehiculo.getNumeroPlaca(), vehiculo);
+            } else {
+                System.out.println("El puesto [" + i + "][" + j + "] ya está ocupado.");
+            }
         } else {
             System.out.println("Posición inválida.");
         }

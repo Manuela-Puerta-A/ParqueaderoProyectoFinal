@@ -1,4 +1,5 @@
 package co.edu.uniquindio.poo;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Scanner;
@@ -11,7 +12,6 @@ import java.util.Scanner;
 
 public class App {
     private static Scanner scanner = new Scanner(System.in);
-    
 
     public static void main(String[] args) {
         // -------------------------Crear Parqueadero--------------------------------//
@@ -19,10 +19,9 @@ public class App {
         Parqueadero.tamanoParqueadero();
         Parqueadero parqueadero = new Parqueadero(nombreParqueadero, 0, 0);
 
-
         // -----------------While y Switch para la logica del "Menu"------------------//
         int opcion = 0;
-        while (opcion != 7) {
+        while (opcion != 8) {
             System.out.println(
                     "Bienvenido al parqueadero " + nombreParqueadero + "\nPor favor seleccione la opción que deseé");
             System.out.println("1-Si es administrador ingrese");
@@ -30,19 +29,16 @@ public class App {
             System.out.println("3-Mostrar todos los vehiculos del parqueadero");
             System.out.println("4-Mostrar estado actual del parqueadero");
             System.out.println("5-Eliminar un vehiculo");
-            System.out.println("6- Consultar total a pagar por vehiculo");
-            System.out.println("7-generar reporte ganancias ");
+            System.out.println("6-Consultar total a pagar por vehiculo");
+            System.out.println("7-Generar reporte ganancias");
             System.out.println("8-Cerrar parqueadero");
             opcion = scanner.nextInt();
             switch (opcion) {
                 case 1:
                     break;
-
                 case 2:
                     Vehiculo.agregarVehiculo();
-
                     break;
-
                 case 3:
                     Vehiculo.mostrarVehiculos();
                     break;
@@ -58,12 +54,9 @@ public class App {
                     break;
                 default:
                     System.out.println("¡Hasta luego!");
-
                     break;
             }
-
         }
         scanner.close();
-
     }
 }
